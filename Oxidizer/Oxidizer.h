@@ -8,6 +8,14 @@
 
 #import <Foundation/Foundation.h>
 
+typedef enum {
+    Init,
+    Connecting,
+    Connected,
+    Disconnecting,
+    Disconnected    
+} OXState;
+
 @interface Oxidizer : NSObject {
     @private
     NSString *_url;

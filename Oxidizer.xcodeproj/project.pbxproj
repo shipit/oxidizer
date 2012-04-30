@@ -10,7 +10,6 @@
 		C431B3DF154F2B23007AD795 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C431B3DE154F2B23007AD795 /* Foundation.framework */; };
 		C431B3E5154F2B23007AD795 /* Oxidizer.m in Sources */ = {isa = PBXBuildFile; fileRef = C431B3E4154F2B23007AD795 /* Oxidizer.m */; };
 		C431B3ED154F2B23007AD795 /* SenTestingKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C431B3EC154F2B23007AD795 /* SenTestingKit.framework */; };
-		C431B3EF154F2B23007AD795 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C431B3EE154F2B23007AD795 /* UIKit.framework */; };
 		C431B3F0154F2B23007AD795 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C431B3DE154F2B23007AD795 /* Foundation.framework */; };
 		C431B3F3154F2B23007AD795 /* libOxidizer.a in Frameworks */ = {isa = PBXBuildFile; fileRef = C431B3DB154F2B23007AD795 /* libOxidizer.a */; };
 		C431B3F9154F2B23007AD795 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = C431B3F7154F2B23007AD795 /* InfoPlist.strings */; };
@@ -36,6 +35,7 @@
 		C431B42D154F3246007AD795 /* AFXMLRequestOperation.m in Sources */ = {isa = PBXBuildFile; fileRef = C431B418154F3246007AD795 /* AFXMLRequestOperation.m */; };
 		C431B42E154F3246007AD795 /* UIImageView+AFNetworking.h in Headers */ = {isa = PBXBuildFile; fileRef = C431B419154F3246007AD795 /* UIImageView+AFNetworking.h */; };
 		C431B42F154F3246007AD795 /* UIImageView+AFNetworking.m in Sources */ = {isa = PBXBuildFile; fileRef = C431B41A154F3246007AD795 /* UIImageView+AFNetworking.m */; };
+		C475E791154F48150094E27E /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C475E790154F48150094E27E /* UIKit.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -56,7 +56,6 @@
 		C431B3E4154F2B23007AD795 /* Oxidizer.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = Oxidizer.m; sourceTree = "<group>"; };
 		C431B3EB154F2B23007AD795 /* OxidizerTests.octest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = OxidizerTests.octest; sourceTree = BUILT_PRODUCTS_DIR; };
 		C431B3EC154F2B23007AD795 /* SenTestingKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SenTestingKit.framework; path = Library/Frameworks/SenTestingKit.framework; sourceTree = DEVELOPER_DIR; };
-		C431B3EE154F2B23007AD795 /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = Library/Frameworks/UIKit.framework; sourceTree = DEVELOPER_DIR; };
 		C431B3F6154F2B23007AD795 /* OxidizerTests-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "OxidizerTests-Info.plist"; sourceTree = "<group>"; };
 		C431B3F8154F2B23007AD795 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		C431B3FA154F2B23007AD795 /* OxidizerTests.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = OxidizerTests.h; sourceTree = "<group>"; };
@@ -82,6 +81,7 @@
 		C431B418154F3246007AD795 /* AFXMLRequestOperation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AFXMLRequestOperation.m; sourceTree = "<group>"; };
 		C431B419154F3246007AD795 /* UIImageView+AFNetworking.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIImageView+AFNetworking.h"; sourceTree = "<group>"; };
 		C431B41A154F3246007AD795 /* UIImageView+AFNetworking.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIImageView+AFNetworking.m"; sourceTree = "<group>"; };
+		C475E790154F48150094E27E /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -90,6 +90,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				C431B3DF154F2B23007AD795 /* Foundation.framework in Frameworks */,
+				C475E791154F48150094E27E /* UIKit.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -98,7 +99,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				C431B3ED154F2B23007AD795 /* SenTestingKit.framework in Frameworks */,
-				C431B3EF154F2B23007AD795 /* UIKit.framework in Frameworks */,
 				C431B3F0154F2B23007AD795 /* Foundation.framework in Frameworks */,
 				C431B3F3154F2B23007AD795 /* libOxidizer.a in Frameworks */,
 			);
@@ -130,9 +130,9 @@
 		C431B3DD154F2B23007AD795 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				C475E790154F48150094E27E /* UIKit.framework */,
 				C431B3DE154F2B23007AD795 /* Foundation.framework */,
 				C431B3EC154F2B23007AD795 /* SenTestingKit.framework */,
-				C431B3EE154F2B23007AD795 /* UIKit.framework */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -384,6 +384,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				IPHONEOS_DEPLOYMENT_TARGET = 5.1;
+				ONLY_ACTIVE_ARCH = NO;
 				SDKROOT = iphoneos;
 			};
 			name = Debug;
@@ -400,6 +401,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				IPHONEOS_DEPLOYMENT_TARGET = 5.1;
+				ONLY_ACTIVE_ARCH = NO;
 				SDKROOT = iphoneos;
 				VALIDATE_PRODUCT = YES;
 			};
@@ -409,6 +411,10 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				DSTROOT = /tmp/Oxidizer.dst;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"\"$(SRCROOT)\"",
+				);
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "Oxidizer/Oxidizer-Prefix.pch";
 				OTHER_LDFLAGS = "-ObjC";
@@ -421,6 +427,10 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				DSTROOT = /tmp/Oxidizer.dst;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"\"$(SRCROOT)\"",
+				);
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "Oxidizer/Oxidizer-Prefix.pch";
 				OTHER_LDFLAGS = "-ObjC";
@@ -478,6 +488,7 @@
 				C431B401154F2B23007AD795 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 		C431B402154F2B23007AD795 /* Build configuration list for PBXNativeTarget "OxidizerTests" */ = {
 			isa = XCConfigurationList;
@@ -486,6 +497,7 @@
 				C431B404154F2B23007AD795 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};
