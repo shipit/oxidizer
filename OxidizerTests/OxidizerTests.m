@@ -6,6 +6,7 @@
 //  Copyright (c) 2012 __MyCompanyName__. All rights reserved.
 //
 
+#import "Oxidizer.h"
 #import "OxidizerTests.h"
 
 @implementation OxidizerTests
@@ -24,9 +25,14 @@
     [super tearDown];
 }
 
-- (void)testExample
-{
-    STFail(@"Unit tests are not implemented yet in OxidizerTests");
+- (void) testConnect {
+    Oxidizer *ox = [Oxidizer connectWithUrl:@"http://asdf/connect"];
+    NSLog(@"ox = %@", ox);
+    [ox release];
+}
+
+- (void)testHandshake {
+    NSLog(@"testHandshake") ;
 }
 
 @end

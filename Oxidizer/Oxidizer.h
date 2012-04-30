@@ -8,6 +8,13 @@
 
 #import <Foundation/Foundation.h>
 
-@interface Oxidizer : NSObject
+@interface Oxidizer : NSObject {
+    @private
+    NSString *_url;
+}
+
+@property (readonly,atomic) NSString *url;
+
++ (id) connectWithUrl:(NSString *) url;
 
 @end

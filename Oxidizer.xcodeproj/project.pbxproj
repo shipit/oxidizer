@@ -30,15 +30,15 @@
 /* Begin PBXFileReference section */
 		C431B3DB154F2B23007AD795 /* libOxidizer.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libOxidizer.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		C431B3DE154F2B23007AD795 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
-		C431B3E2154F2B23007AD795 /* Oxidizer-Prefix.pch */ = {isa = PBXFileReference; path = "Oxidizer-Prefix.pch"; sourceTree = "<group>"; };
-		C431B3E3154F2B23007AD795 /* Oxidizer.h */ = {isa = PBXFileReference; path = Oxidizer.h; sourceTree = "<group>"; };
+		C431B3E2154F2B23007AD795 /* Oxidizer-Prefix.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "Oxidizer-Prefix.pch"; sourceTree = "<group>"; };
+		C431B3E3154F2B23007AD795 /* Oxidizer.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Oxidizer.h; sourceTree = "<group>"; };
 		C431B3E4154F2B23007AD795 /* Oxidizer.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = Oxidizer.m; sourceTree = "<group>"; };
 		C431B3EB154F2B23007AD795 /* OxidizerTests.octest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = OxidizerTests.octest; sourceTree = BUILT_PRODUCTS_DIR; };
 		C431B3EC154F2B23007AD795 /* SenTestingKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SenTestingKit.framework; path = Library/Frameworks/SenTestingKit.framework; sourceTree = DEVELOPER_DIR; };
 		C431B3EE154F2B23007AD795 /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = Library/Frameworks/UIKit.framework; sourceTree = DEVELOPER_DIR; };
-		C431B3F6154F2B23007AD795 /* OxidizerTests-Info.plist */ = {isa = PBXFileReference; path = "OxidizerTests-Info.plist"; sourceTree = "<group>"; };
+		C431B3F6154F2B23007AD795 /* OxidizerTests-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "OxidizerTests-Info.plist"; sourceTree = "<group>"; };
 		C431B3F8154F2B23007AD795 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
-		C431B3FA154F2B23007AD795 /* OxidizerTests.h */ = {isa = PBXFileReference; path = OxidizerTests.h; sourceTree = "<group>"; };
+		C431B3FA154F2B23007AD795 /* OxidizerTests.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = OxidizerTests.h; sourceTree = "<group>"; };
 		C431B3FB154F2B23007AD795 /* OxidizerTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = OxidizerTests.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
