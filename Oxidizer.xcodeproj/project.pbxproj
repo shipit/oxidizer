@@ -15,6 +15,27 @@
 		C431B3F3154F2B23007AD795 /* libOxidizer.a in Frameworks */ = {isa = PBXBuildFile; fileRef = C431B3DB154F2B23007AD795 /* libOxidizer.a */; };
 		C431B3F9154F2B23007AD795 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = C431B3F7154F2B23007AD795 /* InfoPlist.strings */; };
 		C431B3FC154F2B23007AD795 /* OxidizerTests.m in Sources */ = {isa = PBXBuildFile; fileRef = C431B3FB154F2B23007AD795 /* OxidizerTests.m */; };
+		C431B41B154F3246007AD795 /* AFHTTPClient.h in Headers */ = {isa = PBXBuildFile; fileRef = C431B406154F3246007AD795 /* AFHTTPClient.h */; };
+		C431B41C154F3246007AD795 /* AFHTTPClient.m in Sources */ = {isa = PBXBuildFile; fileRef = C431B407154F3246007AD795 /* AFHTTPClient.m */; };
+		C431B41D154F3246007AD795 /* AFHTTPRequestOperation.h in Headers */ = {isa = PBXBuildFile; fileRef = C431B408154F3246007AD795 /* AFHTTPRequestOperation.h */; };
+		C431B41E154F3246007AD795 /* AFHTTPRequestOperation.m in Sources */ = {isa = PBXBuildFile; fileRef = C431B409154F3246007AD795 /* AFHTTPRequestOperation.m */; };
+		C431B41F154F3246007AD795 /* AFImageRequestOperation.h in Headers */ = {isa = PBXBuildFile; fileRef = C431B40A154F3246007AD795 /* AFImageRequestOperation.h */; };
+		C431B420154F3246007AD795 /* AFImageRequestOperation.m in Sources */ = {isa = PBXBuildFile; fileRef = C431B40B154F3246007AD795 /* AFImageRequestOperation.m */; };
+		C431B421154F3246007AD795 /* AFJSONRequestOperation.h in Headers */ = {isa = PBXBuildFile; fileRef = C431B40C154F3246007AD795 /* AFJSONRequestOperation.h */; };
+		C431B422154F3246007AD795 /* AFJSONRequestOperation.m in Sources */ = {isa = PBXBuildFile; fileRef = C431B40D154F3246007AD795 /* AFJSONRequestOperation.m */; };
+		C431B423154F3246007AD795 /* AFJSONUtilities.h in Headers */ = {isa = PBXBuildFile; fileRef = C431B40E154F3246007AD795 /* AFJSONUtilities.h */; };
+		C431B424154F3246007AD795 /* AFJSONUtilities.m in Sources */ = {isa = PBXBuildFile; fileRef = C431B40F154F3246007AD795 /* AFJSONUtilities.m */; };
+		C431B425154F3246007AD795 /* AFNetworkActivityIndicatorManager.h in Headers */ = {isa = PBXBuildFile; fileRef = C431B410154F3246007AD795 /* AFNetworkActivityIndicatorManager.h */; };
+		C431B426154F3246007AD795 /* AFNetworkActivityIndicatorManager.m in Sources */ = {isa = PBXBuildFile; fileRef = C431B411154F3246007AD795 /* AFNetworkActivityIndicatorManager.m */; };
+		C431B427154F3246007AD795 /* AFNetworking.h in Headers */ = {isa = PBXBuildFile; fileRef = C431B412154F3246007AD795 /* AFNetworking.h */; };
+		C431B428154F3246007AD795 /* AFPropertyListRequestOperation.h in Headers */ = {isa = PBXBuildFile; fileRef = C431B413154F3246007AD795 /* AFPropertyListRequestOperation.h */; };
+		C431B429154F3246007AD795 /* AFPropertyListRequestOperation.m in Sources */ = {isa = PBXBuildFile; fileRef = C431B414154F3246007AD795 /* AFPropertyListRequestOperation.m */; };
+		C431B42A154F3246007AD795 /* AFURLConnectionOperation.h in Headers */ = {isa = PBXBuildFile; fileRef = C431B415154F3246007AD795 /* AFURLConnectionOperation.h */; };
+		C431B42B154F3246007AD795 /* AFURLConnectionOperation.m in Sources */ = {isa = PBXBuildFile; fileRef = C431B416154F3246007AD795 /* AFURLConnectionOperation.m */; };
+		C431B42C154F3246007AD795 /* AFXMLRequestOperation.h in Headers */ = {isa = PBXBuildFile; fileRef = C431B417154F3246007AD795 /* AFXMLRequestOperation.h */; };
+		C431B42D154F3246007AD795 /* AFXMLRequestOperation.m in Sources */ = {isa = PBXBuildFile; fileRef = C431B418154F3246007AD795 /* AFXMLRequestOperation.m */; };
+		C431B42E154F3246007AD795 /* UIImageView+AFNetworking.h in Headers */ = {isa = PBXBuildFile; fileRef = C431B419154F3246007AD795 /* UIImageView+AFNetworking.h */; };
+		C431B42F154F3246007AD795 /* UIImageView+AFNetworking.m in Sources */ = {isa = PBXBuildFile; fileRef = C431B41A154F3246007AD795 /* UIImageView+AFNetworking.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -40,6 +61,27 @@
 		C431B3F8154F2B23007AD795 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		C431B3FA154F2B23007AD795 /* OxidizerTests.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = OxidizerTests.h; sourceTree = "<group>"; };
 		C431B3FB154F2B23007AD795 /* OxidizerTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = OxidizerTests.m; sourceTree = "<group>"; };
+		C431B406154F3246007AD795 /* AFHTTPClient.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AFHTTPClient.h; sourceTree = "<group>"; };
+		C431B407154F3246007AD795 /* AFHTTPClient.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AFHTTPClient.m; sourceTree = "<group>"; };
+		C431B408154F3246007AD795 /* AFHTTPRequestOperation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AFHTTPRequestOperation.h; sourceTree = "<group>"; };
+		C431B409154F3246007AD795 /* AFHTTPRequestOperation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AFHTTPRequestOperation.m; sourceTree = "<group>"; };
+		C431B40A154F3246007AD795 /* AFImageRequestOperation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AFImageRequestOperation.h; sourceTree = "<group>"; };
+		C431B40B154F3246007AD795 /* AFImageRequestOperation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AFImageRequestOperation.m; sourceTree = "<group>"; };
+		C431B40C154F3246007AD795 /* AFJSONRequestOperation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AFJSONRequestOperation.h; sourceTree = "<group>"; };
+		C431B40D154F3246007AD795 /* AFJSONRequestOperation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AFJSONRequestOperation.m; sourceTree = "<group>"; };
+		C431B40E154F3246007AD795 /* AFJSONUtilities.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AFJSONUtilities.h; sourceTree = "<group>"; };
+		C431B40F154F3246007AD795 /* AFJSONUtilities.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AFJSONUtilities.m; sourceTree = "<group>"; };
+		C431B410154F3246007AD795 /* AFNetworkActivityIndicatorManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AFNetworkActivityIndicatorManager.h; sourceTree = "<group>"; };
+		C431B411154F3246007AD795 /* AFNetworkActivityIndicatorManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AFNetworkActivityIndicatorManager.m; sourceTree = "<group>"; };
+		C431B412154F3246007AD795 /* AFNetworking.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AFNetworking.h; sourceTree = "<group>"; };
+		C431B413154F3246007AD795 /* AFPropertyListRequestOperation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AFPropertyListRequestOperation.h; sourceTree = "<group>"; };
+		C431B414154F3246007AD795 /* AFPropertyListRequestOperation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AFPropertyListRequestOperation.m; sourceTree = "<group>"; };
+		C431B415154F3246007AD795 /* AFURLConnectionOperation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AFURLConnectionOperation.h; sourceTree = "<group>"; };
+		C431B416154F3246007AD795 /* AFURLConnectionOperation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AFURLConnectionOperation.m; sourceTree = "<group>"; };
+		C431B417154F3246007AD795 /* AFXMLRequestOperation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AFXMLRequestOperation.h; sourceTree = "<group>"; };
+		C431B418154F3246007AD795 /* AFXMLRequestOperation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AFXMLRequestOperation.m; sourceTree = "<group>"; };
+		C431B419154F3246007AD795 /* UIImageView+AFNetworking.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIImageView+AFNetworking.h"; sourceTree = "<group>"; };
+		C431B41A154F3246007AD795 /* UIImageView+AFNetworking.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIImageView+AFNetworking.m"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -68,6 +110,7 @@
 		C431B3D0154F2B23007AD795 = {
 			isa = PBXGroup;
 			children = (
+				C431B405154F3246007AD795 /* AFNetworking */,
 				C431B3E0154F2B23007AD795 /* Oxidizer */,
 				C431B3F4154F2B23007AD795 /* OxidizerTests */,
 				C431B3DD154F2B23007AD795 /* Frameworks */,
@@ -131,6 +174,35 @@
 			name = "Supporting Files";
 			sourceTree = "<group>";
 		};
+		C431B405154F3246007AD795 /* AFNetworking */ = {
+			isa = PBXGroup;
+			children = (
+				C431B406154F3246007AD795 /* AFHTTPClient.h */,
+				C431B407154F3246007AD795 /* AFHTTPClient.m */,
+				C431B408154F3246007AD795 /* AFHTTPRequestOperation.h */,
+				C431B409154F3246007AD795 /* AFHTTPRequestOperation.m */,
+				C431B40A154F3246007AD795 /* AFImageRequestOperation.h */,
+				C431B40B154F3246007AD795 /* AFImageRequestOperation.m */,
+				C431B40C154F3246007AD795 /* AFJSONRequestOperation.h */,
+				C431B40D154F3246007AD795 /* AFJSONRequestOperation.m */,
+				C431B40E154F3246007AD795 /* AFJSONUtilities.h */,
+				C431B40F154F3246007AD795 /* AFJSONUtilities.m */,
+				C431B410154F3246007AD795 /* AFNetworkActivityIndicatorManager.h */,
+				C431B411154F3246007AD795 /* AFNetworkActivityIndicatorManager.m */,
+				C431B412154F3246007AD795 /* AFNetworking.h */,
+				C431B413154F3246007AD795 /* AFPropertyListRequestOperation.h */,
+				C431B414154F3246007AD795 /* AFPropertyListRequestOperation.m */,
+				C431B415154F3246007AD795 /* AFURLConnectionOperation.h */,
+				C431B416154F3246007AD795 /* AFURLConnectionOperation.m */,
+				C431B417154F3246007AD795 /* AFXMLRequestOperation.h */,
+				C431B418154F3246007AD795 /* AFXMLRequestOperation.m */,
+				C431B419154F3246007AD795 /* UIImageView+AFNetworking.h */,
+				C431B41A154F3246007AD795 /* UIImageView+AFNetworking.m */,
+			);
+			name = AFNetworking;
+			path = AFNetworking/AFNetworking;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXHeadersBuildPhase section */
@@ -138,6 +210,17 @@
 			isa = PBXHeadersBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				C431B41B154F3246007AD795 /* AFHTTPClient.h in Headers */,
+				C431B41D154F3246007AD795 /* AFHTTPRequestOperation.h in Headers */,
+				C431B41F154F3246007AD795 /* AFImageRequestOperation.h in Headers */,
+				C431B421154F3246007AD795 /* AFJSONRequestOperation.h in Headers */,
+				C431B423154F3246007AD795 /* AFJSONUtilities.h in Headers */,
+				C431B425154F3246007AD795 /* AFNetworkActivityIndicatorManager.h in Headers */,
+				C431B427154F3246007AD795 /* AFNetworking.h in Headers */,
+				C431B428154F3246007AD795 /* AFPropertyListRequestOperation.h in Headers */,
+				C431B42A154F3246007AD795 /* AFURLConnectionOperation.h in Headers */,
+				C431B42C154F3246007AD795 /* AFXMLRequestOperation.h in Headers */,
+				C431B42E154F3246007AD795 /* UIImageView+AFNetworking.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -239,6 +322,16 @@
 			buildActionMask = 2147483647;
 			files = (
 				C431B3E5154F2B23007AD795 /* Oxidizer.m in Sources */,
+				C431B41C154F3246007AD795 /* AFHTTPClient.m in Sources */,
+				C431B41E154F3246007AD795 /* AFHTTPRequestOperation.m in Sources */,
+				C431B420154F3246007AD795 /* AFImageRequestOperation.m in Sources */,
+				C431B422154F3246007AD795 /* AFJSONRequestOperation.m in Sources */,
+				C431B424154F3246007AD795 /* AFJSONUtilities.m in Sources */,
+				C431B426154F3246007AD795 /* AFNetworkActivityIndicatorManager.m in Sources */,
+				C431B429154F3246007AD795 /* AFPropertyListRequestOperation.m in Sources */,
+				C431B42B154F3246007AD795 /* AFURLConnectionOperation.m in Sources */,
+				C431B42D154F3246007AD795 /* AFXMLRequestOperation.m in Sources */,
+				C431B42F154F3246007AD795 /* UIImageView+AFNetworking.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
