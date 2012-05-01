@@ -3,7 +3,7 @@
 //  OxidizerTests
 //
 //  Created by Sumeet Parmar on 4/30/12.
-//  Copyright (c) 2012 __MyCompanyName__. All rights reserved.
+//  Copyright (c) 2012 TopHatter. All rights reserved.
 //
 
 #import "Oxidizer.h"
@@ -26,7 +26,8 @@
 }
 
 - (void) testConnect {
-    Oxidizer *ox = [Oxidizer connectWithUrl:@"http://asdf/connect"];
+    Oxidizer *ox = [[Oxidizer alloc] init];
+    [ox connectWithUrl:@"/channel/asdf" success:nil failure:nil];
     NSLog(@"ox = %@", ox);
     [ox release];
 }

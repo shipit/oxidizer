@@ -3,7 +3,7 @@
 //  Oxidizer
 //
 //  Created by Sumeet Parmar on 4/30/12.
-//  Copyright (c) 2012 __MyCompanyName__. All rights reserved.
+//  Copyright (c) 2012 TopHatter. All rights reserved.
 //
 
 #import "Oxidizer.h"
@@ -12,11 +12,11 @@
 
 @synthesize url = _url;
 
-+ (id) connectWithUrl:(NSString *) url {
-    Oxidizer *ox = [[Oxidizer alloc] init];
-    ox->_url = url;
+- (void) connectWithUrl:(NSString *) url 
+                success:(void (^)(Oxidizer *oxidizer)) successBlock 
+                failure:(void (^) (Oxidizer *oxidizer)) failureBlock {
     
-    return ox;
+    _url = url;
 }
 
 - (NSString *) description {

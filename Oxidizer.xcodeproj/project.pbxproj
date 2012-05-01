@@ -36,6 +36,8 @@
 		C431B42E154F3246007AD795 /* UIImageView+AFNetworking.h in Headers */ = {isa = PBXBuildFile; fileRef = C431B419154F3246007AD795 /* UIImageView+AFNetworking.h */; };
 		C431B42F154F3246007AD795 /* UIImageView+AFNetworking.m in Sources */ = {isa = PBXBuildFile; fileRef = C431B41A154F3246007AD795 /* UIImageView+AFNetworking.m */; };
 		C475E791154F48150094E27E /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C475E790154F48150094E27E /* UIKit.framework */; };
+		C475E794154F6C480094E27E /* OXChannel.h in Headers */ = {isa = PBXBuildFile; fileRef = C475E792154F6C480094E27E /* OXChannel.h */; };
+		C475E795154F6C480094E27E /* OXChannel.m in Sources */ = {isa = PBXBuildFile; fileRef = C475E793154F6C480094E27E /* OXChannel.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -82,6 +84,8 @@
 		C431B419154F3246007AD795 /* UIImageView+AFNetworking.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIImageView+AFNetworking.h"; sourceTree = "<group>"; };
 		C431B41A154F3246007AD795 /* UIImageView+AFNetworking.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIImageView+AFNetworking.m"; sourceTree = "<group>"; };
 		C475E790154F48150094E27E /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
+		C475E792154F6C480094E27E /* OXChannel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OXChannel.h; sourceTree = "<group>"; };
+		C475E793154F6C480094E27E /* OXChannel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = OXChannel.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -143,6 +147,8 @@
 				C431B3E3154F2B23007AD795 /* Oxidizer.h */,
 				C431B3E4154F2B23007AD795 /* Oxidizer.m */,
 				C431B3E1154F2B23007AD795 /* Supporting Files */,
+				C475E792154F6C480094E27E /* OXChannel.h */,
+				C475E793154F6C480094E27E /* OXChannel.m */,
 			);
 			path = Oxidizer;
 			sourceTree = "<group>";
@@ -221,6 +227,7 @@
 				C431B42A154F3246007AD795 /* AFURLConnectionOperation.h in Headers */,
 				C431B42C154F3246007AD795 /* AFXMLRequestOperation.h in Headers */,
 				C431B42E154F3246007AD795 /* UIImageView+AFNetworking.h in Headers */,
+				C475E794154F6C480094E27E /* OXChannel.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -270,6 +277,7 @@
 			isa = PBXProject;
 			attributes = {
 				LastUpgradeCheck = 0430;
+				ORGANIZATIONNAME = TopHatter;
 			};
 			buildConfigurationList = C431B3D5154F2B23007AD795 /* Build configuration list for PBXProject "Oxidizer" */;
 			compatibilityVersion = "Xcode 3.2";
@@ -332,6 +340,7 @@
 				C431B42B154F3246007AD795 /* AFURLConnectionOperation.m in Sources */,
 				C431B42D154F3246007AD795 /* AFXMLRequestOperation.m in Sources */,
 				C431B42F154F3246007AD795 /* UIImageView+AFNetworking.m in Sources */,
+				C475E795154F6C480094E27E /* OXChannel.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
