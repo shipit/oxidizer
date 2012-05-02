@@ -8,6 +8,15 @@
 
 #import <SenTestingKit/SenTestingKit.h>
 
-@interface OxidizerTests : SenTestCase
+@class Oxidizer;
+
+@interface OxidizerTests : SenTestCase {
+    @private
+    NSString *_testUrl;
+    Oxidizer *_candidate;
+    
+}
+
+- (void) nop;
 
 @end

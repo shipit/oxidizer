@@ -30,26 +30,31 @@ typedef enum {
 } OXState;
 
 @class OXChannel;
+@class AFHTTPClient;
 
 @interface Oxidizer : NSObject {
     @private
     NSString *_url;
+    OXState _state;
+    AFHTTPClient *_httpClient;
 }
 
-@property (readonly,atomic) NSString *url;
+@property (readonly,nonatomic) NSString *url;
+@property (readonly,atomic) OXState state;
 
-- (void) connectWithUrl:(NSString *) url 
-                success:(void (^)(Oxidizer *oxidizer)) successBlock 
-                failure:(void (^) (Oxidizer *oxidizer)) failureBlock;
++ (id) initWithUrl:(NSString *) url;
 
-- (void) disconnect:(void (^)(Oxidizer *oxidizer)) block 
-            failure:(void (^) (Oxidizer *oxidizer)) block;
+- (void) handshakeWithSuccess:(void (^)(Oxidizer *oxidizer)) successBlock 
+                      failure:(void (^) (Oxidizer *oxidizer)) failureBlock;
 
-- (void) handshake:(void (^)(Oxidizer *oxidizer)) block 
-           failure:(void (^) (Oxidizer *oxidizer)) block;
+- (void) connectWithSuccess:(void (^)(Oxidizer *oxidizer)) successBlock 
+                    failure:(void (^) (Oxidizer *oxidizer)) failureBlock;
+
+- (void) disconnectWithSuccess:(void (^)(Oxidizer *oxidizer)) successBlock 
+                       failure:(void (^) (Oxidizer *oxidizer)) failureBlock;
 
 - (void) subscribeToChannel:(NSString *) channelName
-                    success:(void (^)(OXChannel *channel)) block 
-                    failure:(void (^) (OXChannel *channel)) block;
+                    success:(void (^)(OXChannel *channel)) successBlock 
+                    failure:(void (^) (OXChannel *channel)) failureBlock;
 
 @end

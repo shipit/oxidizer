@@ -8,32 +8,47 @@
 
 #import "Oxidizer.h"
 #import "OxidizerTests.h"
+#import "AFNetworking.h"
 
 @implementation OxidizerTests
 
 - (void)setUp
 {
     [super setUp];
-    
-    // Set-up code here.
+    _testUrl = @"http://local.tophatter";
+    _candidate = [Oxidizer initWithUrl:_testUrl];
+    NSLog(@"ox = %@", _candidate);
 }
 
 - (void)tearDown
 {
     // Tear-down code here.
-    
+    [_candidate release];
     [super tearDown];
 }
 
-- (void) testConnect {
-    Oxidizer *ox = [[Oxidizer alloc] init];
-    [ox connectWithUrl:@"/channel/asdf" success:nil failure:nil];
-    NSLog(@"ox = %@", ox);
-    [ox release];
+//- (void) testHandshake {
+//    [_candidate handshakeWithSuccess:nil failure:nil];
+//}
+
+- (void) testGet {
+    AFHTTPClient *client = [AFHTTPClient clientWithBaseURL:[NSURL URLWithString:@"http://apple.com"]];
+    [client getPath:@"/" parameters:nil 
+                            success:^(AFHTTPRequestOperation *operation , id responseObject) {
+                                NSLog(@"SUCCESS response = %@", responseObject);
+                            }
+     
+                            failure:^(AFHTTPRequestOperation *operation , NSError *error) {
+                                NSLog(@"ERROR = %@", error);
+                            }];
+    
+    while (YES) {
+        
+    }
 }
 
-- (void)testHandshake {
-    NSLog(@"testHandshake") ;
+- (void) nop {
+    NSLog(@"NOP");
 }
 
 @end
