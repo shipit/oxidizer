@@ -28,13 +28,6 @@
     return connector;
 }
 
-- (id) init {
-    self = [super init];
-    _responseQueue = dispatch_queue_create("OXIDIZER_RESPONSE_QUEUE", NULL);
-
-    return self;
-}
-
 - (void) configOptions {
     _state = Disconnected;
     _httpClient = [AFHTTPClient clientWithBaseURL:[NSURL URLWithString:_url]];
@@ -46,11 +39,7 @@
 - (void) handshakeWithUrl:(NSString *) url {
     _url = url;
     [self configOptions];
-//    dispatch_async(_responseQueue, ^ { [self doHandshake:_httpClient]; });
-    [self doHandshake:_httpClient];
-}
 
-- (void) doHandshake:(AFHTTPClient *) httpClient {
     _state = Connecting;
     
     NSArray *connectionList = [NSArray arrayWithObjects:@"long-polling", @"callback-polling", nil];
@@ -59,18 +48,18 @@
     [params setObject:@"1.0"             forKey:@"version"];
     [params setObject:connectionList     forKey:@"supportedConnectionTypes"];
     
-    NSURLRequest *request = [httpClient requestWithMethod:@"POST" path:@"" parameters:params];
+    NSURLRequest *request = [_httpClient requestWithMethod:@"POST" path:@"" parameters:params];
     
     AFJSONRequestOperation *jsonRequest = 
     [AFJSONRequestOperation JSONRequestOperationWithRequest:request 
                                                     success:^(NSURLRequest *request, NSHTTPURLResponse *response, id JSON) {
-                                                        dispatch_async(_responseQueue, ^ { [self processHandshakeSuccessResponse:JSON]; });
+                                                        [self processHandshakeSuccessResponse:JSON];
                                                     }
                                                     failure:^(NSURLRequest *request, NSHTTPURLResponse *response, NSError *error, id JSON) {
                                                         NSLog(@"ERROR = %@", error);
                                                         _state = Disconnected;
                                                     }];
-    [httpClient enqueueHTTPRequestOperation:jsonRequest];
+    [_httpClient enqueueHTTPRequestOperation:jsonRequest];
 }
 
 - (void) processHandshakeSuccessResponse:(id) JSON {
@@ -104,8 +93,6 @@
 #pragma mark - Memory management
 
 - (void) dealloc {
-    dispatch_release(_responseQueue);
-    
     [super dealloc];
 }
 

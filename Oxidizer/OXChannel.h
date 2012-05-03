@@ -8,6 +8,22 @@
 
 #import <Foundation/Foundation.h>
 
-@interface OXChannel : NSObject
+@protocol OXChannelDelegate;
+
+@interface OXChannel : NSObject {
+    
+}
+
+@property (readonly,nonatomic) NSString *name;
+@property (assign,nonatomic) id <OXChannelDelegate> delegate;
+
+- (void) unsubscribe;
+
+@end
+
+@protocol OXChannelDelegate <NSObject>
+
+- (void) didReceiveMessageFromChannel:(OXChannel *) channel;
+- (void) didUnsubscribe;
 
 @end

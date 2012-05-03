@@ -38,7 +38,6 @@ typedef enum {
     NSString *_url;
     OXState _state;
     AFHTTPClient *_httpClient;
-    dispatch_queue_t _responseQueue;
     
     NSString *_clientId;
 }
@@ -52,7 +51,9 @@ typedef enum {
 - (void) handshakeWithUrl:(NSString *)url;
 - (void) connect;
 - (void) disconnect;
-- (void) subscribeToChannel:(NSString *) channelName;
+- (void) subscribeToChannel:(NSString *) channelName 
+                    success:(void (^)(OXChannel *channel)) successBlock
+                    failure:(void (^)(Oxidizer *oxidizer)) failureBlock;
 
 - (void) configOptions;
 
