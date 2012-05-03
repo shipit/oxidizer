@@ -14,12 +14,16 @@
 
 @synthesize url = _url;
 @synthesize state = _state;
+@synthesize delegate;
 
-+ (id) initWithUrl:(NSString *)url {
-    Oxidizer *ox = [[Oxidizer alloc] init];
-    ox->_url = url;
-    [ox configOptions];
-    return ox;
++ (id) connector {
+    static Oxidizer *connector;
+    
+    if (connector == nil) {
+        connector = [[Oxidizer alloc] init];
+    }
+    
+    return connector;
 }
 
 - (void) configOptions {
@@ -28,8 +32,10 @@
     [_httpClient setParameterEncoding:AFJSONParameterEncoding]; 
 }
 
-- (void) handshakeWithSuccess:(void (^)(Oxidizer *))successBlock 
-                    failure:(void (^)(Oxidizer *))failureBlock {
+- (void) handshakeWithUrl:(NSString *) url {
+    _url = url;
+    [self configOptions];
+    
     _state = Connecting;
         
     NSArray *connectionList = [NSArray arrayWithObjects:@"long-polling", @"callback-polling", nil];
@@ -46,12 +52,25 @@
                                                     success:^(NSURLRequest *request, NSHTTPURLResponse *response, id JSON) {
                                                         NSLog(@"SUCCESS response = %@", JSON);
                                                         _state = Connected;
+                                                        
                                                     }
                                                     failure:^(NSURLRequest *request, NSHTTPURLResponse *response, NSError *error, id JSON) {
                                                         NSLog(@"ERROR = %@", error);
                                                         _state = Disconnected;
                                                     }];
     [_httpClient enqueueHTTPRequestOperation:jsonRequest];
+}
+
+- (void) connect {
+    
+}
+
+- (void) disconnect {
+    
+}
+
+- (void) subscribeToChannel:(NSString *) channelName {
+    
 }
 
 - (NSString *) description {

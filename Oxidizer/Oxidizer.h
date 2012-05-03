@@ -31,6 +31,7 @@ typedef enum {
 
 @class OXChannel;
 @class AFHTTPClient;
+@protocol OxidizerDelegate;
 
 @interface Oxidizer : NSObject {
     @private
@@ -41,21 +42,24 @@ typedef enum {
 
 @property (readonly,nonatomic) NSString *url;
 @property (readonly,atomic) OXState state;
+@property (assign,nonatomic) id<OxidizerDelegate> delegate;
 
-+ (id) initWithUrl:(NSString *) url;
++ (id) connector;
+
+- (void) handshakeWithUrl:(NSString *)url;
+- (void) connect;
+- (void) disconnect;
+- (void) subscribeToChannel:(NSString *) channelName;
+
 - (void) configOptions;
 
-- (void) handshakeWithSuccess:(void (^)(Oxidizer *oxidizer)) successBlock 
-                      failure:(void (^) (Oxidizer *oxidizer)) failureBlock;
+@end
 
-- (void) connectWithSuccess:(void (^)(Oxidizer *oxidizer)) successBlock 
-                    failure:(void (^) (Oxidizer *oxidizer)) failureBlock;
+@protocol OxidizerDelegate <NSObject>
 
-- (void) disconnectWithSuccess:(void (^)(Oxidizer *oxidizer)) successBlock 
-                       failure:(void (^) (Oxidizer *oxidizer)) failureBlock;
-
-- (void) subscribeToChannel:(NSString *) channelName
-                    success:(void (^)(OXChannel *channel)) successBlock 
-                    failure:(void (^) (OXChannel *channel)) failureBlock;
+- (void) didHandshakeForConnector:(Oxidizer *)connector withResult:(BOOL)result;
+- (void) didConnectForConnector:(Oxidizer *)connector withResult:(BOOL)result;
+- (void) didDisconnectForConnector:(Oxidizer *)connector withResult:(BOOL)result;
+- (void) didSubscribeToChannel:(OXChannel *)channel withResult:(BOOL)result;
 
 @end
