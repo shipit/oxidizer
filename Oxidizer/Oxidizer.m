@@ -16,6 +16,8 @@
 @synthesize state = _state;
 @synthesize delegate;
 
+#pragma mark - Construction
+
 + (id) connector {
     static Oxidizer *connector;
     
@@ -26,11 +28,20 @@
     return connector;
 }
 
+- (id) init {
+    self = [super init];
+    _responseQueue = dispatch_queue_create("OXIDIZER_RESPONSE_QUEUE", NULL);
+
+    return self;
+}
+
 - (void) configOptions {
     _state = Disconnected;
     _httpClient = [AFHTTPClient clientWithBaseURL:[NSURL URLWithString:_url]];
     [_httpClient setParameterEncoding:AFJSONParameterEncoding]; 
 }
+
+#pragma mark - Bayeux Protocol
 
 - (void) handshakeWithUrl:(NSString *) url {
     _url = url;
@@ -40,7 +51,6 @@
         
     NSArray *connectionList = [NSArray arrayWithObjects:@"long-polling", @"callback-polling", nil];
     NSMutableDictionary *params = [[NSMutableDictionary alloc] init];
-    [params setObject:@"1" forKey:@"id"];
     [params setObject:@"/meta/handshake" forKey:@"channel"];
     [params setObject:@"1.0"             forKey:@"version"];
     [params setObject:connectionList     forKey:@"supportedConnectionTypes"];
@@ -50,15 +60,21 @@
     AFJSONRequestOperation *jsonRequest = 
     [AFJSONRequestOperation JSONRequestOperationWithRequest:request 
                                                     success:^(NSURLRequest *request, NSHTTPURLResponse *response, id JSON) {
-                                                        NSLog(@"SUCCESS response = %@", JSON);
-                                                        _state = Connected;
-                                                        
+                                                        dispatch_async(_responseQueue, ^ { [self processHandshakeSuccessResponse:JSON]; });
                                                     }
                                                     failure:^(NSURLRequest *request, NSHTTPURLResponse *response, NSError *error, id JSON) {
                                                         NSLog(@"ERROR = %@", error);
                                                         _state = Disconnected;
                                                     }];
     [_httpClient enqueueHTTPRequestOperation:jsonRequest];
+}
+
+- (void) processHandshakeSuccessResponse:(id) JSON {
+    NSLog(@"SUCCESS response = %@", JSON);
+    _state = Connected;
+    NSDictionary *dict = [JSON objectAtIndex:0];
+    _clientId = [dict objectForKey:@"clientId"];
+    NSLog(@"clientId = %@", _clientId);
 }
 
 - (void) connect {
@@ -75,6 +91,14 @@
 
 - (NSString *) description {
     return [NSString stringWithFormat:@"{url=%@,state=%d}", _url, _state];
+}
+
+#pragma mark - Memory management
+
+- (void) dealloc {
+    dispatch_release(_responseQueue);
+    
+    [super dealloc];
 }
 
 @end

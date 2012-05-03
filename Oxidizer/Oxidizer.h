@@ -38,6 +38,9 @@ typedef enum {
     NSString *_url;
     OXState _state;
     AFHTTPClient *_httpClient;
+    dispatch_queue_t _responseQueue;
+    
+    NSString *_clientId;
 }
 
 @property (readonly,nonatomic) NSString *url;
