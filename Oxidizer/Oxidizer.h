@@ -60,7 +60,7 @@ typedef enum {
 
 @protocol OxidizerDelegate <NSObject>
 
-- (void) didHandshakeForConnector:(Oxidizer *)connector withResult:(BOOL)result;
+- (void) didHandshakeForConnector:(Oxidizer *)connector withResult:(BOOL)result withParams:(NSDictionary *)params;
 - (void) didConnectForConnector:(Oxidizer *)connector withResult:(BOOL)result;
 - (void) didDisconnectForConnector:(Oxidizer *)connector withResult:(BOOL)result;
 - (void) didSubscribeToChannel:(OXChannel *)channel withResult:(BOOL)result;

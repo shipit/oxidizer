@@ -46,16 +46,20 @@
 - (void) handshakeWithUrl:(NSString *) url {
     _url = url;
     [self configOptions];
-    
+//    dispatch_async(_responseQueue, ^ { [self doHandshake:_httpClient]; });
+    [self doHandshake:_httpClient];
+}
+
+- (void) doHandshake:(AFHTTPClient *) httpClient {
     _state = Connecting;
-        
+    
     NSArray *connectionList = [NSArray arrayWithObjects:@"long-polling", @"callback-polling", nil];
     NSMutableDictionary *params = [[NSMutableDictionary alloc] init];
     [params setObject:@"/meta/handshake" forKey:@"channel"];
     [params setObject:@"1.0"             forKey:@"version"];
     [params setObject:connectionList     forKey:@"supportedConnectionTypes"];
     
-    NSURLRequest *request = [_httpClient requestWithMethod:@"POST" path:@"" parameters:params];
+    NSURLRequest *request = [httpClient requestWithMethod:@"POST" path:@"" parameters:params];
     
     AFJSONRequestOperation *jsonRequest = 
     [AFJSONRequestOperation JSONRequestOperationWithRequest:request 
@@ -66,7 +70,7 @@
                                                         NSLog(@"ERROR = %@", error);
                                                         _state = Disconnected;
                                                     }];
-    [_httpClient enqueueHTTPRequestOperation:jsonRequest];
+    [httpClient enqueueHTTPRequestOperation:jsonRequest];
 }
 
 - (void) processHandshakeSuccessResponse:(id) JSON {
@@ -75,6 +79,10 @@
     NSDictionary *dict = [JSON objectAtIndex:0];
     _clientId = [dict objectForKey:@"clientId"];
     NSLog(@"clientId = %@", _clientId);
+    
+    if (self.delegate != nil) {
+        [delegate didHandshakeForConnector:self withResult:YES withParams:dict];
+    }
 }
 
 - (void) connect {
