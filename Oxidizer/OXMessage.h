@@ -15,6 +15,7 @@
 @property (retain,nonatomic) NSDictionary *params;
 
 + (OXMessage *) handshakeMessage;
-+ (OXMessage *) connectWithClientId:(NSString *) clientId withTransport:(NSString *) transport;
++ (OXMessage *) connectWithTransport:(NSString *) transport;
++ (OXMessage *) subscribeToChannel:(NSString *) channelName;
 
 @end

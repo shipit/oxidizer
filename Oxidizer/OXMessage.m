@@ -7,6 +7,7 @@
 //
 
 #import "OXMessage.h"
+#import "Oxidizer.h"
 
 @implementation OXMessage
 
@@ -26,17 +27,31 @@
     return message;
 }
 
-+ (OXMessage *) connectWithClientId:(NSString *) clientId withTransport:(NSString *) transport {
++ (OXMessage *) connectWithTransport:(NSString *) transport {
     OXMessage *message = [[OXMessage alloc] init];
     
     NSMutableDictionary *params = [[NSMutableDictionary alloc] init];
-    [params setObject:@"/meta/connect" forKey:@"channel"];
-    [params setObject:@"1.0"           forKey:@"version"];
-    [params setObject:clientId         forKey:@"clientId"];
+    [params setObject:@"/meta/connect"              forKey:@"channel"];
+    [params setObject:@"1.0"                        forKey:@"version"];
+    [params setObject:[Oxidizer connector].clientId forKey:@"clientId"];
     
     message.params = params;
     
     return message;
+}
+
++ (OXMessage *) subscribeToChannel:(NSString *) channelName {
+    OXMessage *message = [[OXMessage alloc] init];
+    
+    NSMutableDictionary *params = [[NSMutableDictionary alloc] init];
+    [params setObject:@"/meta/subscribe"            forKey:@"channel"];
+    [params setObject:@"1.0"                        forKey:@"version"];
+    [params setObject:[Oxidizer connector].clientId forKey:@"clientId"];
+    [params setObject:channelName                   forKey:@"subscription"];    
+    
+    message.params = params;
+    
+    return message;    
 }
 
 @end

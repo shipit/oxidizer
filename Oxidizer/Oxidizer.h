@@ -45,8 +45,9 @@ typedef enum {
 @property (readonly,nonatomic) NSString *url;
 @property (readonly,atomic) OXState state;
 @property (assign,nonatomic) id<OxidizerDelegate> delegate;
+@property (readonly,nonatomic) NSString *clientId;
 
-+ (id) connector;
++ (Oxidizer *) connector;
 
 - (void) handshakeWithUrl:(NSString *)url;
 - (void) connect;

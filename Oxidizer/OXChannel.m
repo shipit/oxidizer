@@ -10,7 +10,14 @@
 
 @implementation OXChannel
 
-@synthesize name;
+@synthesize subscription = _subscription;
 @synthesize delegate;
+
++ (OXChannel *)channelWithParams:(NSDictionary *)params {
+    OXChannel *channel = [[OXChannel alloc] init];
+    channel->_subscription = [params objectForKey:@"subscription"];
+    
+    return channel;
+}
 
 @end

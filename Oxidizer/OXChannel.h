@@ -11,11 +11,14 @@
 @protocol OXChannelDelegate;
 
 @interface OXChannel : NSObject {
-    
+    @private
+    NSString *_subscription;
 }
 
-@property (readonly,nonatomic) NSString *name;
+@property (readonly,nonatomic) NSString *subscription;
 @property (assign,nonatomic) id <OXChannelDelegate> delegate;
+
++ (OXChannel *) channelWithParams:(NSDictionary *) params;
 
 - (void) publish:(NSString *)message;
 - (void) unsubscribe;
