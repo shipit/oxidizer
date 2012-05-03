@@ -43,6 +43,7 @@ typedef enum {
 @property (readonly,atomic) OXState state;
 
 + (id) initWithUrl:(NSString *) url;
+- (void) configOptions;
 
 - (void) handshakeWithSuccess:(void (^)(Oxidizer *oxidizer)) successBlock 
                       failure:(void (^) (Oxidizer *oxidizer)) failureBlock;

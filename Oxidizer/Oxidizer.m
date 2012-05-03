@@ -18,15 +18,14 @@
 + (id) initWithUrl:(NSString *)url {
     Oxidizer *ox = [[Oxidizer alloc] init];
     ox->_url = url;
-    ox->_httpClient = [AFHTTPClient clientWithBaseURL:[NSURL URLWithString:ox->_url]];
+    [ox configOptions];
     return ox;
 }
 
-- (id) init {
-    self = [super init];
+- (void) configOptions {
     _state = Disconnected;
-    [_httpClient setParameterEncoding:AFJSONParameterEncoding];
-    return self;
+    _httpClient = [AFHTTPClient clientWithBaseURL:[NSURL URLWithString:_url]];
+    [_httpClient setParameterEncoding:AFJSONParameterEncoding]; 
 }
 
 - (void) handshakeWithSuccess:(void (^)(Oxidizer *))successBlock 
@@ -40,8 +39,7 @@
     [params setObject:@"1.0"             forKey:@"version"];
     [params setObject:connectionList     forKey:@"supportedConnectionTypes"];
     
-    NSURLRequest *request = [_httpClient requestWithMethod:@"POST" path:@"/" parameters:params];
-    NSLog(@"REQUEST = %@", request);
+    NSURLRequest *request = [_httpClient requestWithMethod:@"POST" path:@"" parameters:params];
     
     AFJSONRequestOperation *jsonRequest = 
     [AFJSONRequestOperation JSONRequestOperationWithRequest:request 
