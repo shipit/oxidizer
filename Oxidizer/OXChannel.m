@@ -10,4 +10,7 @@
 
 @implementation OXChannel
 
+@synthesize name;
+@synthesize delegate;
+
 @end

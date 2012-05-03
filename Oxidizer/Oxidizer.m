@@ -9,6 +9,7 @@
 #import "Oxidizer.h"
 #import "AFHTTPClient.h"
 #import "AFJSONRequestOperation.h"
+#import "OXMessage.h"
 
 @implementation Oxidizer
 
@@ -30,7 +31,7 @@
 
 - (void) configOptions {
     _state = Disconnected;
-    _httpClient = [AFHTTPClient clientWithBaseURL:[NSURL URLWithString:_url]];
+    _httpClient = [[AFHTTPClient clientWithBaseURL:[NSURL URLWithString:_url]] retain];
     [_httpClient setParameterEncoding:AFJSONParameterEncoding]; 
 }
 
@@ -42,13 +43,7 @@
 
     _state = Connecting;
     
-    NSArray *connectionList = [NSArray arrayWithObjects:@"long-polling", @"callback-polling", nil];
-    NSMutableDictionary *params = [[NSMutableDictionary alloc] init];
-    [params setObject:@"/meta/handshake" forKey:@"channel"];
-    [params setObject:@"1.0"             forKey:@"version"];
-    [params setObject:connectionList     forKey:@"supportedConnectionTypes"];
-    
-    NSURLRequest *request = [_httpClient requestWithMethod:@"POST" path:@"" parameters:params];
+    NSURLRequest *request = [_httpClient requestWithMethod:@"POST" path:@"" parameters:[OXMessage handshakeMessage].params];
     
     AFJSONRequestOperation *jsonRequest = 
     [AFJSONRequestOperation JSONRequestOperationWithRequest:request 
@@ -59,23 +54,72 @@
                                                         NSLog(@"ERROR = %@", error);
                                                         _state = Disconnected;
                                                     }];
+    
     [_httpClient enqueueHTTPRequestOperation:jsonRequest];
 }
 
 - (void) processHandshakeSuccessResponse:(id) JSON {
-    NSLog(@"SUCCESS response = %@", JSON);
-    _state = Connected;
     NSDictionary *dict = [JSON objectAtIndex:0];
-    _clientId = [dict objectForKey:@"clientId"];
-    NSLog(@"clientId = %@", _clientId);
+    BOOL successful = [[dict objectForKey:@"successful"] boolValue];
+    
+    if (successful) {
+        _clientId = [[dict objectForKey:@"clientId"] retain];
+        dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), 
+                       ^ { [self connect]; });
+    } else {
+        _state = Unconnected;
+    }
     
     if (self.delegate != nil) {
-        [delegate didHandshakeForConnector:self withResult:YES withParams:dict];
+        [delegate didHandshakeForConnector:self withResult:successful withParams:dict];
     }
 }
 
 - (void) connect {
+    OXMessage *message = [OXMessage connectWithClientId:_clientId withTransport:@"long-polling"];
     
+    NSURLRequest *request = [_httpClient requestWithMethod:@"POST" path:@"" parameters:message.params];
+    
+    AFJSONRequestOperation *jsonRequest = 
+    [AFJSONRequestOperation JSONRequestOperationWithRequest:request 
+                                                    success:^(NSURLRequest *request, NSHTTPURLResponse *response, id JSON) {
+                                                        [self processConnectSuccessResponse:JSON];
+                                                    }
+                                                    failure:^(NSURLRequest *request, NSHTTPURLResponse *response, NSError *error, id JSON) {
+                                                        NSLog(@"ERROR = %@", error);
+                                                        _state = Disconnected;
+                                                    }];
+    
+    [_httpClient enqueueHTTPRequestOperation:jsonRequest];    
+}
+
+- (void) processConnectSuccessResponse:(id) JSON {
+    _state = Connected;
+    
+    NSDictionary *dict = [JSON objectAtIndex:0];
+    BOOL successful = [[dict objectForKey:@"successful"] boolValue];
+    
+    if (successful) {
+        [self processConnectAdvice:dict];
+    }
+    
+    if (self.delegate != nil) {
+        [delegate didConnectForConnector:self withResult:successful];
+    }
+}
+
+- (void) processConnectAdvice:(NSDictionary *) dict {
+    NSDictionary *adviceParams = [dict objectForKey:@"advice"];
+    
+    if (adviceParams != nil) {
+        /*
+         advice =         {
+         interval = 0;
+         reconnect = retry;
+         timeout = 30000;
+         };
+         */
+    }
 }
 
 - (void) disconnect {
@@ -93,6 +137,7 @@
 #pragma mark - Memory management
 
 - (void) dealloc {
+    [_httpClient release];
     [super dealloc];
 }
 

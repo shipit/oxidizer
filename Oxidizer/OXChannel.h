@@ -17,6 +17,7 @@
 @property (readonly,nonatomic) NSString *name;
 @property (assign,nonatomic) id <OXChannelDelegate> delegate;
 
+- (void) publish:(NSString *)message;
 - (void) unsubscribe;
 
 @end
