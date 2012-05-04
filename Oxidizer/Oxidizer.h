@@ -42,6 +42,7 @@ typedef enum {
     NSString *_clientId;
     NSMutableDictionary *_channelMap;
     dispatch_source_t _pollTimer;
+    int _nextMessageId;
 }
 
 @property (readonly,nonatomic) NSString *url;

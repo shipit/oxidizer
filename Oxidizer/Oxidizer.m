@@ -34,6 +34,7 @@
 - (id) init {
     self = [super init];
     _channelMap = [[NSMutableDictionary alloc] init];
+    _nextMessageId = 0;
     return self;
 }
 
@@ -46,6 +47,32 @@
 #pragma mark - Bayeux Protocol
 
 #pragma mark - Handshake
+
+- (void) sendMessage:(OXMessage *) message 
+             success:(void (^)(id JSON)) successBlock 
+             failure:(void (^) (NSHTTPURLResponse *response, NSError *error)) failureBlock {
+    _nextMessageId++;
+    NSMutableDictionary *params = [NSMutableDictionary dictionaryWithDictionary:[OXMessage handshakeMessage].params];
+    [params setObject:[NSNumber numberWithInt:_nextMessageId] forKey:@"id"];
+    
+    NSURLRequest *request = [_httpClient requestWithMethod:@"POST" path:@"" parameters:params];
+    
+    AFJSONRequestOperation *jsonRequest = 
+    [AFJSONRequestOperation JSONRequestOperationWithRequest:request 
+                                                    success:^(NSURLRequest *request, NSHTTPURLResponse *response, id JSON) {
+                                                        if (successBlock) {
+                                                            successBlock(JSON);
+                                                        }
+                                                    }
+                                                    failure:^(NSURLRequest *request, NSHTTPURLResponse *response, NSError *error, id JSON) {
+                                                        NSLog(@"ERROR, request = %@, response = %@, error = %@, error = %@", request, response, error, JSON);
+                                                        if (failureBlock) {
+                                                            failureBlock(response, error);
+                                                        }
+                                                    }];
+    
+    [_httpClient enqueueHTTPRequestOperation:jsonRequest];
+}
 
 - (void) handshakeWithUrl:(NSString *) url {
     _url = url;
@@ -74,8 +101,13 @@
     
     if (successful) {
         _clientId = [[dict objectForKey:@"clientId"] retain];
-        dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), 
-                       ^ { [self connect]; });
+        NSArray *transports = [dict objectForKey:@"supportedConnectionTypes"];
+        if ([transports containsObject:@"long-polling"]) {
+            dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), 
+                           ^ { [self connect]; });
+        } else {
+            NSLog(@"ERROR long-polling not available - QUITTING!!!");
+        }
     } else {
         _state = Unconnected;
     }
@@ -97,10 +129,11 @@
     AFJSONRequestOperation *jsonRequest = 
     [AFJSONRequestOperation JSONRequestOperationWithRequest:request 
                                                     success:^(NSURLRequest *request, NSHTTPURLResponse *response, id JSON) {
+                                                        NSLog(@"CONNECT = %@", JSON);
                                                         [self processConnectSuccessResponse:JSON];
                                                     }
                                                     failure:^(NSURLRequest *request, NSHTTPURLResponse *response, NSError *error, id JSON) {
-                                                        NSLog(@"ERROR = %@", JSON);
+                                                        NSLog(@"ERROR = %@", response);
                                                         _state = Disconnected;
                                                     }];
     
@@ -127,8 +160,19 @@
     
     if (adviceParams != nil) {
         NSLog(@"** SETTING UP CONNECT ADVICE **");
-        NSInteger interval = [[adviceParams objectForKey:@"timeout"] intValue] / 1000;
-        [self setupPollerWithInterval:interval];
+        
+        NSString *reconnect = [adviceParams objectForKey:@"reconnect"];
+        
+        if ([@"retry" isEqualToString:reconnect]) {
+            NSInteger interval = [[adviceParams objectForKey:@"timeout"] intValue] / 1000;
+            
+            if (interval == -1) {
+                if (_pollTimer) {
+                    dispatch_source_cancel(_pollTimer);
+                }
+            } else {
+                [self setupPollerWithInterval:interval];
+            }
         /*
          advice =         {
          interval = 0;
@@ -136,6 +180,7 @@
          timeout = 30000;
          };
          */
+        }
     }
 }
 
@@ -245,6 +290,10 @@ dispatch_source_t CreateDispatchTimer(uint64_t interval,
 #pragma mark - Memory management
 
 - (void) dealloc {
+    if (_pollTimer) {
+        dispatch_source_cancel(_pollTimer);
+    }
+    
     [_httpClient release];
     [super dealloc];
 }
