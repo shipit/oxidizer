@@ -16,7 +16,7 @@
 + (OXMessage *) handshakeMessage {
     OXMessage *message = [[OXMessage alloc] init];
     
-    NSArray *connectionList = [NSArray arrayWithObjects:@"long-polling", @"callback-polling", nil];
+    NSArray *connectionList = [NSArray arrayWithObjects:@"long-polling", @"callback-polling", @"websocket", nil];
     NSMutableDictionary *params = [[NSMutableDictionary alloc] init];
     [params setObject:@"/meta/handshake" forKey:@"channel"];
     [params setObject:@"1.0"             forKey:@"version"];
@@ -33,6 +33,7 @@
     NSMutableDictionary *params = [[NSMutableDictionary alloc] init];
     [params setObject:@"/meta/connect"              forKey:@"channel"];
     [params setObject:@"1.0"                        forKey:@"version"];
+    [params setObject:transport                     forKey:@"connectionType"];
     [params setObject:[Oxidizer connector].clientId forKey:@"clientId"];
     
     message.params = params;

@@ -40,6 +40,8 @@ typedef enum {
     AFHTTPClient *_httpClient;
     
     NSString *_clientId;
+    NSMutableDictionary *_channelMap;
+    dispatch_source_t _pollTimer;
 }
 
 @property (readonly,nonatomic) NSString *url;

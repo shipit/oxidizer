@@ -31,6 +31,12 @@
     return connector;
 }
 
+- (id) init {
+    self = [super init];
+    _channelMap = [[NSMutableDictionary alloc] init];
+    return self;
+}
+
 - (void) configOptions {
     _state = Disconnected;
     _httpClient = [[AFHTTPClient clientWithBaseURL:[NSURL URLWithString:_url]] retain];
@@ -92,7 +98,7 @@
                                                         [self processConnectSuccessResponse:JSON];
                                                     }
                                                     failure:^(NSURLRequest *request, NSHTTPURLResponse *response, NSError *error, id JSON) {
-                                                        NSLog(@"ERROR = %@", error);
+                                                        NSLog(@"ERROR = %@", JSON);
                                                         _state = Disconnected;
                                                     }];
     
@@ -118,6 +124,9 @@
     NSDictionary *adviceParams = [dict objectForKey:@"advice"];
     
     if (adviceParams != nil) {
+        NSLog(@"** SETTING UP CONNECT ADVICE **");
+        NSInteger interval = [[adviceParams objectForKey:@"timeout"] intValue] / 1000;
+        [self setupPollerWithInterval:interval];
         /*
          advice =         {
          interval = 0;
@@ -162,14 +171,53 @@
     BOOL successful = [[dict objectForKey:@"successful"] boolValue];
 
     if (successful) {
+        OXChannel *channel = [OXChannel channelWithParams:dict];
+        [_channelMap setObject:channel forKey:channel.subscription];
+        
         if (successBlock != nil) {
-            successBlock([OXChannel channelWithParams:dict]);
+            successBlock(channel);
         }
     } else {
         if (failureBlock) {
             failureBlock(self);
         }
     }
+}
+
+#pragma mark - Long poller
+
+dispatch_source_t CreateDispatchTimer(uint64_t interval,
+                                      uint64_t leeway,
+                                      dispatch_queue_t queue,
+                                      dispatch_block_t block) {
+    dispatch_source_t timer = dispatch_source_create(DISPATCH_SOURCE_TYPE_TIMER,
+                                                     0, 0, queue);
+    if (timer) {
+        dispatch_source_set_timer(timer, dispatch_walltime(NULL, 0), interval, leeway);
+        dispatch_source_set_event_handler(timer, block);
+        dispatch_resume(timer);
+    }
+    
+    return timer;
+}
+
+- (void) setupPollerWithInterval:(NSInteger) interval {
+//    if (_pollTimer) {
+//        dispatch_source_cancel(_pollTimer);
+//        _pollTimer = 0;
+//    }
+    
+    NSLog(@"setupPollerWithInterval:%d", interval);
+    
+    _pollTimer = CreateDispatchTimer(interval * NSEC_PER_SEC,
+                                      1ull * NSEC_PER_SEC, 
+                                     dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), 
+                                     ^{ [self doPollAction]; });
+}
+
+- (void) doPollAction {
+    NSLog(@"timer:doPollAction");
+    [self connect];
 }
 
 #pragma mark - NSObject delegate
