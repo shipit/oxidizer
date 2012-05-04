@@ -89,6 +89,8 @@
 
 - (void) connect {
     OXMessage *message = [OXMessage connectWithTransport:@"long-polling"];
+    NSLog(@"connect message = %@", message.params);
+    
     NSURLRequest *request = [_httpClient requestWithMethod:@"POST" path:@"" parameters:message.params];
     [message release];
     
@@ -202,11 +204,6 @@ dispatch_source_t CreateDispatchTimer(uint64_t interval,
 }
 
 - (void) setupPollerWithInterval:(NSInteger) interval {
-//    if (_pollTimer) {
-//        dispatch_source_cancel(_pollTimer);
-//        _pollTimer = 0;
-//    }
-    
     NSLog(@"setupPollerWithInterval:%d", interval);
     
     _pollTimer = CreateDispatchTimer(interval * NSEC_PER_SEC,
@@ -218,6 +215,25 @@ dispatch_source_t CreateDispatchTimer(uint64_t interval,
 - (void) doPollAction {
     NSLog(@"timer:doPollAction");
     [self connect];
+}
+
+#pragma mark - Publish message 
+
+- (void) publishMessageToChannel:(NSString *) channelName withData:(NSDictionary *) data {
+    OXMessage *message = [OXMessage messageForChannel:channelName withData:data];
+    NSURLRequest *request = [_httpClient requestWithMethod:@"POST" path:@"" parameters:message.params];
+    [message release];
+    
+    AFJSONRequestOperation *jsonRequest = 
+    [AFJSONRequestOperation JSONRequestOperationWithRequest:request 
+                                                    success:^(NSURLRequest *request, NSHTTPURLResponse *response, id JSON) {
+                                                        NSLog(@"SUCCESS = %@", JSON);
+                                                    }
+                                                    failure:^(NSURLRequest *request, NSHTTPURLResponse *response, NSError *error, id JSON) {
+                                                        NSLog(@"ERROR = %@", error);
+                                                    }];
+    
+    [_httpClient enqueueHTTPRequestOperation:jsonRequest];      
 }
 
 #pragma mark - NSObject delegate

@@ -57,6 +57,7 @@ typedef enum {
 - (void) subscribeToChannel:(NSString *) channelName 
                     success:(void (^)(OXChannel *channel)) successBlock
                     failure:(void (^)(Oxidizer *oxidizer)) failureBlock;
+- (void) publishMessageToChannel:(NSString *) channelName withData:(NSDictionary *) data;
 
 - (void) configOptions;
 

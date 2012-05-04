@@ -17,5 +17,6 @@
 + (OXMessage *) handshakeMessage;
 + (OXMessage *) connectWithTransport:(NSString *) transport;
 + (OXMessage *) subscribeToChannel:(NSString *) channelName;
++ (OXMessage *) messageForChannel:(NSString *) channelName withData:(NSDictionary *) data;
 
 @end

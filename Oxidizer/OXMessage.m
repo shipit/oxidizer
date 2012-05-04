@@ -55,4 +55,18 @@
     return message;    
 }
 
++ (OXMessage *) messageForChannel:(NSString *) channelName withData:(NSDictionary *) data {
+    OXMessage *message = [[OXMessage alloc] init];
+    
+    NSMutableDictionary *params = [[NSMutableDictionary alloc] init];
+    [params setObject:channelName                   forKey:@"channel"];
+    [params setObject:@"1.0"                        forKey:@"version"];
+    [params setObject:[Oxidizer connector].clientId forKey:@"clientId"];
+    [params setObject:data                          forKey:@"data"];
+    
+    message.params = params;
+    
+    return message;     
+}
+
 @end
