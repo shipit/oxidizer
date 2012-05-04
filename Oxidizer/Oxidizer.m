@@ -80,19 +80,9 @@
 
     _state = Connecting;
     
-    NSURLRequest *request = [_httpClient requestWithMethod:@"POST" path:@"" parameters:[OXMessage handshakeMessage].params];
-    
-    AFJSONRequestOperation *jsonRequest = 
-    [AFJSONRequestOperation JSONRequestOperationWithRequest:request 
-                                                    success:^(NSURLRequest *request, NSHTTPURLResponse *response, id JSON) {
-                                                        [self processHandshakeSuccessResponse:JSON];
-                                                    }
-                                                    failure:^(NSURLRequest *request, NSHTTPURLResponse *response, NSError *error, id JSON) {
-                                                        NSLog(@"ERROR = %@", error);
-                                                        _state = Disconnected;
-                                                    }];
-    
-    [_httpClient enqueueHTTPRequestOperation:jsonRequest];
+    [self sendMessage:[OXMessage handshakeMessage] 
+              success:^ (id JSON) { [self processHandshakeSuccessResponse:JSON]; }  
+              failure:nil];
 }
 
 - (void) processHandshakeSuccessResponse:(id) JSON {
