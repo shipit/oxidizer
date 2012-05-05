@@ -61,9 +61,12 @@
     [AFJSONRequestOperation JSONRequestOperationWithRequest:request 
                                                     success:^(NSURLRequest *request, NSHTTPURLResponse *response, id JSON) {
                                                         [self processMessages:JSON];
+                                                        
                                                         if (successBlock) {
-                                                            successBlock(JSON);
+                                                            successBlock([self getResponseForMessage:message fromJSON:JSON]);
                                                         }
+                                                        
+                                                        [self processAdvice:JSON];
                                                     }
                                                     failure:^(NSURLRequest *request, NSHTTPURLResponse *response, NSError *error, id JSON) {
                                                         NSLog(@"ERROR, request = %@, response = %@, error = %@, error = %@", request, response, error, JSON);
@@ -73,6 +76,26 @@
                                                     }];
     
     [_httpClient enqueueHTTPRequestOperation:jsonRequest];
+}
+
+- (id) getResponseForMessage:(OXMessage *) message fromJSON:(id) JSON {
+    id response = nil;
+    
+    for (int i = 0; i < [JSON count]; i++) {
+        id element = [JSON objectAtIndex:i];
+        NSString *channelName = [element objectForKey:@"channel"];
+        
+        if (channelName == nil) {
+            continue;
+        }
+        
+        if ([channelName isEqualToString:message.channelName]) {
+            response = element;
+            break;
+        }
+    }
+    
+    return response;
 }
 
 - (void) processMessages:(id) JSON {
@@ -111,7 +134,7 @@
 }
 
 - (void) processHandshakeSuccessResponse:(id) JSON {
-    NSDictionary *dict = [JSON objectAtIndex:0];
+    NSDictionary *dict = JSON;
     BOOL successful = [[dict objectForKey:@"successful"] boolValue];
     
     if (successful) {
@@ -144,43 +167,43 @@
     _state = Connected;
     
     NSLog(@"connect, JSON = %@", JSON);
-    NSDictionary *dict = [JSON objectAtIndex:0];
-    BOOL successful = [[dict objectForKey:@"successful"] boolValue];
-    
-    if (successful) {
-        [self processConnectAdvice:dict];
-    }
+    BOOL successful = [[JSON objectForKey:@"successful"] boolValue];
     
     if (self.delegate != nil) {
         [delegate didConnectForConnector:self withResult:successful];
     }
 }
 
-- (void) processConnectAdvice:(NSDictionary *) dict {
-    NSDictionary *adviceParams = [dict objectForKey:@"advice"];
+/*
+ advice =         {
+ interval = 0;
+ reconnect = retry;
+ timeout = 30000;
+ };
+ */
+- (void) processAdvice:(id) JSON {
     
-    if (adviceParams != nil) {
-        NSLog(@"** SETTING UP CONNECT ADVICE **");
+    for (int i = 0; i < [JSON count]; i++) {
+        id element = [JSON objectAtIndex:i];
+        NSDictionary *adviceParams = [element valueForKey:@"advice"];
         
-        NSString *reconnect = [adviceParams objectForKey:@"reconnect"];
-        
-        if ([@"retry" isEqualToString:reconnect]) {
-            NSInteger interval = [[adviceParams objectForKey:@"timeout"] intValue] / 1000;
+        if (adviceParams) {
+            NSLog(@"** SETTING UP CONNECT ADVICE **");
             
-            if (interval == -1) {
-                if (_pollTimer) {
-                    dispatch_source_cancel(_pollTimer);
+            NSString *reconnect = [adviceParams objectForKey:@"reconnect"];
+            
+            if ([@"retry" isEqualToString:reconnect]) {
+                NSInteger interval = [[adviceParams objectForKey:@"timeout"] intValue] / 1000;
+                
+                if (interval == -1) {
+                    if (_pollTimer) {
+                        dispatch_source_cancel(_pollTimer);
+                    }
+                } else {
+                    [self setupPollerWithInterval:interval];
                 }
-            } else {
-                [self setupPollerWithInterval:interval];
+
             }
-        /*
-         advice =         {
-         interval = 0;
-         reconnect = retry;
-         timeout = 30000;
-         };
-         */
         }
     }
 }
@@ -203,7 +226,7 @@
 - (void) processSubscribeSuccessResponse:(id) JSON
                                  success:(void (^)(OXChannel *channel)) successBlock
                                  failure:(void (^)(Oxidizer *oxidizer)) failureBlock {
-    NSDictionary *dict = [JSON objectAtIndex:0];
+    NSDictionary *dict = JSON;
     BOOL successful = [[dict objectForKey:@"successful"] boolValue];
 
     if (successful) {

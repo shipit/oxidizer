@@ -9,10 +9,12 @@
 #import <UIKit/UIKit.h>
 
 @interface OXMessage : NSObject {
-    
+    @private
+    NSString *_channelName;
 }
 
 @property (retain,nonatomic) NSDictionary *params;
+@property (retain,nonatomic,readonly) NSString *channelName;
 
 + (OXMessage *) handshakeMessage;
 + (OXMessage *) connectWithTransport:(NSString *) transport;
