@@ -60,6 +60,7 @@
     AFJSONRequestOperation *jsonRequest = 
     [AFJSONRequestOperation JSONRequestOperationWithRequest:request 
                                                     success:^(NSURLRequest *request, NSHTTPURLResponse *response, id JSON) {
+                                                        [self processMessages:JSON];
                                                         if (successBlock) {
                                                             successBlock(JSON);
                                                         }
@@ -72,6 +73,30 @@
                                                     }];
     
     [_httpClient enqueueHTTPRequestOperation:jsonRequest];
+}
+
+- (void) processMessages:(id) JSON {
+    for (int i = 0; i < [JSON count]; i++) {
+        id element = [JSON objectAtIndex:i];
+        NSLog(@"element = %@", element);
+        
+        NSString *channelName = [element objectForKey:@"channel"];
+        
+        if (channelName == nil) {
+            continue;
+        }
+        
+        OXChannel *channel = [_channelMap objectForKey:channelName];
+        
+        if (channel != nil) {
+            if (channel.delegate != nil) {
+                [channel.delegate didReceiveMessage:element fromChannel:channel];
+            }
+        } else {
+            //meta channel
+            NSLog(@"got channel = %@", channelName);
+        }
+    }
 }
 
 - (void) handshakeWithUrl:(NSString *) url {
@@ -230,7 +255,7 @@ dispatch_source_t CreateDispatchTimer(uint64_t interval,
 
 - (void) publishMessageToChannel:(NSString *) channelName withData:(NSDictionary *) data {
     [self sendMessage:[OXMessage messageForChannel:channelName withData:data] 
-              success:^(id JSON) { NSLog(@"publishSuccess = %@", JSON); } 
+              success:nil 
               failure:nil];
 }
 

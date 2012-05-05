@@ -27,7 +27,7 @@
 
 @protocol OXChannelDelegate <NSObject>
 
-- (void) didReceiveMessageFromChannel:(OXChannel *) channel;
+- (void) didReceiveMessage:(id) JSON fromChannel:(OXChannel *) channel;
 - (void) didUnsubscribe;
 
 @end
