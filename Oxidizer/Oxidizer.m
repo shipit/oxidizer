@@ -60,6 +60,8 @@
     AFJSONRequestOperation *jsonRequest = 
     [AFJSONRequestOperation JSONRequestOperationWithRequest:request 
                                                     success:^(NSURLRequest *request, NSHTTPURLResponse *response, id JSON) {
+                                                        NSLog(@"AF:success response, request = %@", request);
+                                                        
                                                         [self processMessages:JSON];
                                                         
                                                         if (successBlock) {
@@ -75,6 +77,7 @@
                                                         }
                                                     }];
     
+    NSLog(@"AF:enqueue http request = %@", jsonRequest);
     [_httpClient enqueueHTTPRequestOperation:jsonRequest];
 }
 
