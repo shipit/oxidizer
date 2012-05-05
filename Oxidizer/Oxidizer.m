@@ -52,7 +52,7 @@
              success:(void (^)(id JSON)) successBlock 
              failure:(void (^) (NSHTTPURLResponse *response, NSError *error)) failureBlock {
     _nextMessageId++;
-    NSMutableDictionary *params = [NSMutableDictionary dictionaryWithDictionary:[OXMessage handshakeMessage].params];
+    NSMutableDictionary *params = [NSMutableDictionary dictionaryWithDictionary:message.params];
     [params setObject:[NSNumber numberWithInt:_nextMessageId] forKey:@"id"];
     
     NSURLRequest *request = [_httpClient requestWithMethod:@"POST" path:@"" parameters:params];
@@ -110,29 +110,15 @@
 #pragma mark - Connect
 
 - (void) connect {
-    OXMessage *message = [OXMessage connectWithTransport:@"long-polling"];
-    NSLog(@"connect message = %@", message.params);
-    
-    NSURLRequest *request = [_httpClient requestWithMethod:@"POST" path:@"" parameters:message.params];
-    [message release];
-    
-    AFJSONRequestOperation *jsonRequest = 
-    [AFJSONRequestOperation JSONRequestOperationWithRequest:request 
-                                                    success:^(NSURLRequest *request, NSHTTPURLResponse *response, id JSON) {
-                                                        NSLog(@"CONNECT = %@", JSON);
-                                                        [self processConnectSuccessResponse:JSON];
-                                                    }
-                                                    failure:^(NSURLRequest *request, NSHTTPURLResponse *response, NSError *error, id JSON) {
-                                                        NSLog(@"ERROR = %@", response);
-                                                        _state = Disconnected;
-                                                    }];
-    
-    [_httpClient enqueueHTTPRequestOperation:jsonRequest];    
+    [self sendMessage:[OXMessage connectWithTransport:@"long-polling"] 
+              success:^(id JSON) { [self processConnectSuccessResponse:JSON]; } 
+              failure:nil];   
 }
 
 - (void) processConnectSuccessResponse:(id) JSON {
     _state = Connected;
     
+    NSLog(@"connect, JSON = %@", JSON);
     NSDictionary *dict = [JSON objectAtIndex:0];
     BOOL successful = [[dict objectForKey:@"successful"] boolValue];
     
@@ -184,21 +170,9 @@
                     success:(void (^)(OXChannel *channel)) successBlock
                     failure:(void (^)(Oxidizer *oxidizer)) failureBlock {
     
-    OXMessage *message = [OXMessage subscribeToChannel:channelName];
-    NSURLRequest *request = [_httpClient requestWithMethod:@"POST" path:@"" parameters:message.params];
-    [message release];
-    
-    AFJSONRequestOperation *jsonRequest = 
-    [AFJSONRequestOperation JSONRequestOperationWithRequest:request 
-                                                    success:^(NSURLRequest *request, NSHTTPURLResponse *response, id JSON) {
-                                                        [self processSubscribeSuccessResponse:JSON success:successBlock failure:failureBlock];
-                                                    }
-                                                    failure:^(NSURLRequest *request, NSHTTPURLResponse *response, NSError *error, id JSON) {
-                                                        NSLog(@"ERROR = %@", error);
-                                                        _state = Disconnected;
-                                                    }];
-    
-    [_httpClient enqueueHTTPRequestOperation:jsonRequest];     
+    [self sendMessage:[OXMessage subscribeToChannel:channelName] 
+              success:^(id JSON) { [self processSubscribeSuccessResponse:JSON success:successBlock failure:failureBlock]; }
+              failure:nil];
 }
 
 - (void) processSubscribeSuccessResponse:(id) JSON
@@ -255,20 +229,9 @@ dispatch_source_t CreateDispatchTimer(uint64_t interval,
 #pragma mark - Publish message 
 
 - (void) publishMessageToChannel:(NSString *) channelName withData:(NSDictionary *) data {
-    OXMessage *message = [OXMessage messageForChannel:channelName withData:data];
-    NSURLRequest *request = [_httpClient requestWithMethod:@"POST" path:@"" parameters:message.params];
-    [message release];
-    
-    AFJSONRequestOperation *jsonRequest = 
-    [AFJSONRequestOperation JSONRequestOperationWithRequest:request 
-                                                    success:^(NSURLRequest *request, NSHTTPURLResponse *response, id JSON) {
-                                                        NSLog(@"SUCCESS = %@", JSON);
-                                                    }
-                                                    failure:^(NSURLRequest *request, NSHTTPURLResponse *response, NSError *error, id JSON) {
-                                                        NSLog(@"ERROR = %@", error);
-                                                    }];
-    
-    [_httpClient enqueueHTTPRequestOperation:jsonRequest];      
+    [self sendMessage:[OXMessage messageForChannel:channelName withData:data] 
+              success:^(id JSON) { NSLog(@"publishSuccess = %@", JSON); } 
+              failure:nil];
 }
 
 #pragma mark - NSObject delegate
