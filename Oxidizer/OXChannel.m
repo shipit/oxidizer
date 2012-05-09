@@ -20,4 +20,12 @@
     return channel;
 }
 
+- (void) publish:(NSString *)message {
+    
+}
+
+- (void) unsubscribe {
+    
+}
+
 @end

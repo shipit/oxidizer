@@ -11,50 +11,84 @@
 
 @implementation OXMessage
 
-@synthesize params;
+@synthesize params = _params;
 @synthesize channelName = _channelName;
+@synthesize clientId = _clientId;
+@synthesize version = _version;
+@synthesize transport = _transport;
+@synthesize data = _data;
+@synthesize subscription = _subscription;
+
+- (id) init {
+    self = [super init];
+    _version = @"1.0";
+    _clientId = [Oxidizer connector].clientId;
+    
+    return self;
+}
+
+- (id) initWithParams:(NSDictionary *)params {
+    self = [self init];
+    
+    if (params) {
+        _params = params;
+    }
+    
+    return self;
+}
+
+- (NSDictionary *) params {
+    NSMutableDictionary *dict;
+    
+    if (_params) {
+        dict = [NSMutableDictionary dictionaryWithDictionary:_params];
+    } else {
+        dict = [[NSMutableDictionary alloc] initWithCapacity:10];
+    }
+    
+    [dict setObject:_channelName forKey:@"channel"];
+    [dict setObject:_version forKey:@"version"];
+    
+    if (_clientId) {
+        [dict setObject:_clientId forKey:@"clientId"];
+    }
+    
+    if (_transport) {
+        [dict setObject:_transport forKey:@"connectionType"];
+    }
+    
+    if (_subscription) {
+        [dict setObject:_subscription forKey:@"subscription"];
+    }
+    
+    return dict;
+}
 
 + (OXMessage *) handshakeMessage {
-    OXMessage *message = [[[OXMessage alloc] init] autorelease];
-    message->_channelName = @"/meta/handshake";
-    
     NSArray *connectionList = [NSArray arrayWithObjects:@"long-polling", @"callback-polling", @"websocket", nil];
+    
     NSMutableDictionary *params = [[[NSMutableDictionary alloc] init] autorelease];
-    [params setObject:message.channelName forKey:@"channel"];
-    [params setObject:@"1.0"             forKey:@"version"];
     [params setObject:connectionList     forKey:@"supportedConnectionTypes"];
     
-    message.params = params;
+    OXMessage *message = [[[OXMessage alloc] initWithParams:params] autorelease];
     
+    message->_channelName = @"/meta/handshake";
+        
     return message;
 }
 
 + (OXMessage *) connectWithTransport:(NSString *) transport {
     OXMessage *message = [[[OXMessage alloc] init] autorelease];
     message->_channelName = @"/meta/connect";
-    
-    NSMutableDictionary *params = [[[NSMutableDictionary alloc] init] autorelease];
-    [params setObject:message.channelName              forKey:@"channel"];
-    [params setObject:@"1.0"                        forKey:@"version"];
-    [params setObject:transport                     forKey:@"connectionType"];
-    [params setObject:[Oxidizer connector].clientId forKey:@"clientId"];
-    
-    message.params = params;
-    
+    message->_transport = transport;
+
     return message;
 }
 
 + (OXMessage *) subscribeToChannel:(NSString *) channelName {
     OXMessage *message = [[[OXMessage alloc] init] autorelease];
     message->_channelName = @"/meta/subscribe";
-    
-    NSMutableDictionary *params = [[[NSMutableDictionary alloc] init] autorelease];
-    [params setObject:message.channelName            forKey:@"channel"];
-    [params setObject:@"1.0"                        forKey:@"version"];
-    [params setObject:[Oxidizer connector].clientId forKey:@"clientId"];
-    [params setObject:channelName                   forKey:@"subscription"];    
-    
-    message.params = params;
+    message->_subscription = channelName;
     
     return message;    
 }
@@ -62,15 +96,8 @@
 + (OXMessage *) messageForChannel:(NSString *) channelName withData:(NSDictionary *) data {
     OXMessage *message = [[[OXMessage alloc] init] autorelease];
     message->_channelName = channelName;
-    
-    NSMutableDictionary *params = [[[NSMutableDictionary alloc] init] autorelease];
-    [params setObject:channelName                   forKey:@"channel"];
-    [params setObject:@"1.0"                        forKey:@"version"];
-    [params setObject:[Oxidizer connector].clientId forKey:@"clientId"];
-    [params setObject:data                          forKey:@"data"];
-    
-    message.params = params;
-    
+    message->_data = data;
+        
     return message;     
 }
 
