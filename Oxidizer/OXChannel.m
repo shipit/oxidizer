@@ -14,7 +14,7 @@
 @synthesize delegate;
 
 + (OXChannel *)channelWithParams:(NSDictionary *)params {
-    OXChannel *channel = [[OXChannel alloc] init];
+    OXChannel *channel = [[[OXChannel alloc] init] autorelease];
     channel->_subscription = [params objectForKey:@"subscription"];
     
     return channel;
