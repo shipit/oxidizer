@@ -7,6 +7,7 @@
 //
 
 #import <Foundation/Foundation.h>
+#import "OXTransport.h"
 
 /** Ref: http://svn.cometd.com/trunk/bayeux/bayeux.html#toc_16
 -------------++------------+-------------+------------+------------
@@ -30,19 +31,19 @@ typedef enum {
 } OXState;
 
 @class OXChannel;
-@class AFHTTPClient;
 @protocol OxidizerDelegate;
 
 @interface Oxidizer : NSObject {
     @private
     NSString *_url;
     OXState _state;
-    AFHTTPClient *_httpClient;
     
     NSString *_clientId;
     NSMutableDictionary *_channelMap;
     dispatch_source_t _pollTimer;
     int _nextMessageId;
+    
+    id <OXTransport> _transport;
 }
 
 @property (readonly,nonatomic) NSString *url;
@@ -58,8 +59,8 @@ typedef enum {
 - (void) subscribeToChannel:(NSString *) channelName 
                     success:(void (^)(OXChannel *channel)) successBlock
                     failure:(void (^)(Oxidizer *oxidizer)) failureBlock;
-- (void) publishMessageToChannel:(NSString *) channelName withData:(NSDictionary *) data;
 
+- (void) publishMessageToChannel:(NSString *) channelName withData:(NSDictionary *) data;
 - (void) configOptions;
 
 @end

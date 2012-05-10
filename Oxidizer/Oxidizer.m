@@ -11,6 +11,7 @@
 #import "AFJSONRequestOperation.h"
 #import "OXMessage.h"
 #import "OXChannel.h"
+#import "OXLongPollTransport.h"
 
 @implementation Oxidizer
 
@@ -40,8 +41,10 @@
 
 - (void) configOptions {
     _state = Disconnected;
-    _httpClient = [[AFHTTPClient clientWithBaseURL:[NSURL URLWithString:_url]] retain];
-    [_httpClient setParameterEncoding:AFJSONParameterEncoding]; 
+    
+    _transport = [[OXLongPollTransport alloc] init];
+    [_transport connectToUrl:_url];
+    [_transport setReceiveBlock:^(id JSON) { [self processMessages:(JSON)]; }];
 }
 
 #pragma mark - Bayeux Protocol
@@ -54,31 +57,48 @@
     _nextMessageId++;
     NSMutableDictionary *params = [NSMutableDictionary dictionaryWithDictionary:message.params];
     [params setObject:[NSNumber numberWithInt:_nextMessageId] forKey:@"id"];
+    [_transport send:params 
+             success:^(id JSON) {
+                 [self processMessages:JSON];
+                 
+                 if (successBlock) {
+                     successBlock([self getResponseForMessage:message fromJSON:JSON]);
+                 }
+                 
+                 [self processAdvice:JSON];
+             }
+             failure:^(NSError *error) {
+                 NSLog(@"ERROR, error = %@", error);
+                 
+                 if (failureBlock) {
+                     failureBlock(nil, error);
+                 }
+             }];
     
-    NSURLRequest *request = [_httpClient requestWithMethod:@"POST" path:@"" parameters:params];
-    
-    AFJSONRequestOperation *jsonRequest = 
-    [AFJSONRequestOperation JSONRequestOperationWithRequest:request 
-                                                    success:^(NSURLRequest *request, NSHTTPURLResponse *response, id JSON) {
-                                                        NSLog(@"AF:success response, request = %@", request);
-                                                        
-                                                        [self processMessages:JSON];
-                                                        
-                                                        if (successBlock) {
-                                                            successBlock([self getResponseForMessage:message fromJSON:JSON]);
-                                                        }
-                                                        
-                                                        [self processAdvice:JSON];
-                                                    }
-                                                    failure:^(NSURLRequest *request, NSHTTPURLResponse *response, NSError *error, id JSON) {
-                                                        NSLog(@"ERROR, request = %@, response = %@, error = %@, error = %@", request, response, error, JSON);
-                                                        if (failureBlock) {
-                                                            failureBlock(response, error);
-                                                        }
-                                                    }];
-    
-    NSLog(@"AF:enqueue http request = %@", jsonRequest);
-    [_httpClient enqueueHTTPRequestOperation:jsonRequest];
+//    NSURLRequest *request = [_httpClient requestWithMethod:@"POST" path:@"" parameters:params];
+//    
+//    AFJSONRequestOperation *jsonRequest = 
+//    [AFJSONRequestOperation JSONRequestOperationWithRequest:request 
+//                                                    success:^(NSURLRequest *request, NSHTTPURLResponse *response, id JSON) {
+//                                                        NSLog(@"AF:success response, request = %@", request);
+//                                                        
+//                                                        [self processMessages:JSON];
+//                                                        
+//                                                        if (successBlock) {
+//                                                            successBlock([self getResponseForMessage:message fromJSON:JSON]);
+//                                                        }
+//                                                        
+//                                                        [self processAdvice:JSON];
+//                                                    }
+//                                                    failure:^(NSURLRequest *request, NSHTTPURLResponse *response, NSError *error, id JSON) {
+//                                                        NSLog(@"ERROR, request = %@, response = %@, error = %@, error = %@", request, response, error, JSON);
+//                                                        if (failureBlock) {
+//                                                            failureBlock(response, error);
+//                                                        }
+//                                                    }];
+//    
+//    NSLog(@"AF:enqueue http request = %@", jsonRequest);
+//    [_httpClient enqueueHTTPRequestOperation:jsonRequest];
 }
 
 - (id) getResponseForMessage:(OXMessage *) message fromJSON:(id) JSON {
@@ -143,7 +163,7 @@
     if (successful) {
         _clientId = [[dict objectForKey:@"clientId"] retain];
         NSArray *transports = [dict objectForKey:@"supportedConnectionTypes"];
-        if ([transports containsObject:@"long-polling"]) {
+        if (transports != nil && [transports containsObject:@"long-polling"]) {
             dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), 
                            ^ { [self connect]; });
         } else {
@@ -298,7 +318,6 @@ dispatch_source_t CreateDispatchTimer(uint64_t interval,
         dispatch_source_cancel(_pollTimer);
     }
     
-    [_httpClient release];
     [super dealloc];
 }
 
